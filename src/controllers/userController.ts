@@ -14,4 +14,14 @@ export default class ProductController {
     
     return res.status(StatusCodes.CREATED).json({ token });
   };
+
+  public findOne = async (req: Request, res: Response, _next: NextFunction): Promise<Response> => {
+    const { username, password } = req.body; 
+    const token = await this.service.findOne(username, password);
+    if (typeof (token) !== 'string') {
+      const { message } = token;
+      return res.status(token.status).json({ message });
+    }
+    return res.status(StatusCodes.OK).json({ token });  
+  };
 }
